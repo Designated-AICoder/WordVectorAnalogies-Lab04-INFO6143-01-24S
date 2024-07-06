@@ -4,8 +4,8 @@ import numpy as np
 words = []
 vectors = None
 matches = ["" for _ in range(20)]
-word_count = 0
-dim_count = 0
+word_count = 0 # Total number of words in the dataset
+dim_count = 0 # size of the word vectors
 
 # Load the word list and set of vectors
 def load_word_vectors(input_file):
@@ -13,13 +13,17 @@ def load_word_vectors(input_file):
     with open(input_file, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
+    # The first line of the file contains the number of words in the vocabulary and the size of the vectors
+    # https://fasttext.cc/docs/en/english-vectors.html#format
     args = lines[0].split()
     word_count = int(args[0])
     dim_count = int(args[1])
 
+    # Initialize the words and vectors lists
     words = [None] * word_count
     vectors = np.zeros((word_count, dim_count))
 
+    # Load the words and vectors into the lists
     count = 0
     for line in lines[1:]:
         tokens = line.split()
@@ -54,6 +58,7 @@ def match_vect(x, cos_sim):
         else:
             d_cos_sim = 0.0
 
+        # If the cosine similarity is greater than the current value, replace it
         if cos_sim > d_cos_sim:
             matches[-1] = s_cos_sim + "_" + words[x]
             matches.sort(reverse=True)
@@ -84,8 +89,9 @@ def find_analogies():
             print("Must be 3 words, Please redo")
             continue
 
-        print(f"Processing analogy... {analogy_args[0]} is to {analogy_args[1]} as {analogy_args[2]} is to ")
+        print(f"Processing analogy... \n{analogy_args[0]} is to {analogy_args[1]} as {analogy_args[2]} is to ",end="")
 
+        # Retrieve the vectors for the 3 input words
         vect1 = get_vect(analogy_args[0])
         vect2 = get_vect(analogy_args[1])
         vect3 = get_vect(analogy_args[2])
@@ -102,11 +108,13 @@ def find_analogies():
         for i in range(len(matches)):
             matches[i] = ""
 
+        # Calculate the cosine similarity for all the words in the dictionary
         for i in range(word_count):
             vect6 = vectors[i]
             cos_similarity = calculate_cosine_similarity(vect5, vect6)
             match_vect(i, cos_similarity)
 
+        # Print the best matching word
         for match in matches:
             argsM = match.split('_')
             found = False
@@ -122,10 +130,11 @@ def find_analogies():
                     print(m.replace("_", " "))
                 break
 
-# Main Script Execution
-if __name__ == "__main__":
-    input_file = 'wiki-news-300d-1M.vec'
-    print("Loading Dictionary....")
-    load_word_vectors(input_file)
-    print("Dictionary Loaded....")
-    find_analogies()
+
+
+
+input_file = 'c:\data\wiki-news-300d-1M.vec'
+print("Loading Dictionary....")
+load_word_vectors(input_file)
+print("Dictionary Loaded....")
+find_analogies()
