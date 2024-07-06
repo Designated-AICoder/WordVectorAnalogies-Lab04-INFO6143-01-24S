@@ -9,7 +9,7 @@ This project is designed to process word analogies using pre-trained word vector
 
 ## Files
 
-- `main.py`: The main script containing the functions and execution logic.
+- `Group7_Lab04.py`: The main script containing the functions and execution logic.
 - `wiki-news-300d-1M.vec`: The input file containing pre-trained word vectors. This file should be in the same directory as `main.py`.
 
 ## Global Variables
@@ -85,6 +85,6 @@ The main function to process analogies entered by the user.
 3. Follow the prompts to enter word analogies in the form "A B C".
 4. The script will output the most suitable word D and provide debug information.
 
-## Ouput
+## Output
 
 ![Output](output.png)
